@@ -37,8 +37,8 @@ The file format is:
 }
 ```
 
-Currently only two senders are implemented:<br\>
-ostfoldeneergi, smartelektro<br\>
+Currently only two senders are implemented:<br/>
+ostfoldeneergi, smartelektro<br/>
 
-Currently only one receiver is implemented:<br\>
-energymanager<br\>
+Currently only one receiver is implemented:<br/>
+energymanager<br/>
