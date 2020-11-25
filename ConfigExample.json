@@ -1,0 +1,20 @@
+{
+    "Sender": [
+        {
+            "id": "ostfoldenergi",
+            "filePath": "./testdata/oe/",
+            "filePattern": "SarpKommune_*.json"
+        },
+        {
+            "id": "smartelektro",
+            "filePath": "./testdata/se/",
+            "filePattern": "BY*.csv"
+        }
+    ],
+    "receiver": [
+        {
+            "id": "energymanager",
+            "connectionString": "*Secret*"
+        }
+    ]
+}
