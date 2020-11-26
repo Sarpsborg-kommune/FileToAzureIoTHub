@@ -21,11 +21,9 @@ As administrator/root: `pwsh ./Install.ps1`
 
 ## Configuration File
 
----
-
-> :warning: **Be _VERY_ careful with the config file exposure after you add theAzure IoT Hub connection string. This string should not be exposed to unauthorized parties. You can prevent this by only editing the file in the configuration directory.**
-
----
+> :warning: **Be _VERY_ careful with the config file exposure after you add theAzure IoT Hub connection string.
+> This string should not be exposed to unauthorized parties. You can prevent this by only editing the file in the
+> configuration directory.**
 
 The configuration file `FileToAzureIoTHub.json` is placed differently based on the OS the
 file is installed on:<br/>

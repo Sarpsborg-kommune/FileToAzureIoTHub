@@ -3,35 +3,15 @@ using System.IO;
 
 namespace FileToAzureIoTHub
 {
-    public class Watcher
+
+    public class Program
     {
         static void Main()
         {
-            Run();
+            Watcher watcher = new Watcher();
+
+            watcher.Run();
         }
 
-        private static void Run()
-        {
-            string[] args = Environment.GetCommandLineArgs();
-
-            using (FileSystemWatcher watcher = new FileSystemWatcher())
-            {
-                watcher.Path = args[1];
-                watcher.Filter = "*.json";
-                watcher.Created += OnCreated;
-
-                watcher.EnableRaisingEvents = true;
-
-                Console.WriteLine("Press 'q' to quit the application.");
-                while (Console.Read() != 'q') ;
-            }
-        }
-
-        private static void OnCreated(object source, FileSystemEventArgs e)
-        {
-            Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
-        }
     }
-
-
 }
