@@ -3,6 +3,10 @@ using System.IO;
 using System.Text.Json;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace FileToAzureIoTHub
 {
@@ -25,14 +29,17 @@ namespace FileToAzureIoTHub
         public IList<Receiver> receiver { get; set; }
     }
 
-    public class Watcher
+    public class Watcher : BackgroundService
     {
+        private readonly ILogger<Watcher> _logger;
         Settings settings;
 
-        public Watcher()
+        public Watcher(ILogger<Watcher> logger)
         {
             string fileName;
             string jsonString;
+
+            _logger = logger;
 
             if (OperatingSystem.IsLinux())
             {
@@ -56,9 +63,9 @@ namespace FileToAzureIoTHub
                 throw new System.IO.IOException("Configuration File does not exist.");
         }
 
-        public void Run()
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Console.WriteLine(settings.sender[0].id);
+
             using (FileSystemWatcher watcher = new FileSystemWatcher())
             {
                 watcher.Path = Path.GetFullPath(settings.sender[0].filePath);
@@ -66,10 +73,13 @@ namespace FileToAzureIoTHub
                 watcher.Created += OnCreated;
                 watcher.EnableRaisingEvents = true;
 
+                _logger.LogInformation("{time} FileToAzureIoTHub service started.", DateTimeOffset.Now);
 
-                Console.WriteLine("Press 'q' + 'Enter' to quit the application.");
-                while (Console.Read() != 'q') ;
-
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    await Task.Delay(1000, stoppingToken);
+                }
+                _logger.LogInformation("{time} FileToAzureIoTHub service stopping.", DateTimeOffset.Now);
             }
         }
 
@@ -81,3 +91,9 @@ namespace FileToAzureIoTHub
     }
 
 }
+
+/*
+    Console.WriteLine("Press 'q' + 'Enter' to quit the application.");
+    while (Console.Read() != 'q') ;
+
+*/
