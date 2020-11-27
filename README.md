@@ -119,3 +119,19 @@ Multisensordata can also be formatted as:
     ]
 }
 ```
+
+### Smart Elektro
+
+The data is received as a CSV file with the following format.
+
+```
+"<DateTime>","<IDENT>",<METER READING>
+"DD-MM-YYYY HH:MM:SS","<IDENT String>",<double>
+```
+
+The Ident String has the following format:
+`Cluster<#>.ID_MEASUREMENTTYPE`
+
+ID example: `BY3570_310_001_OE001`
+
+MEASUREMENTTYPE examples: `Heat_energy_Y`, `kwh_T`
