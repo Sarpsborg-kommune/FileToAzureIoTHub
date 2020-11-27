@@ -10,14 +10,14 @@ using Microsoft.Extensions.Logging;
 
 namespace FileToAzureIoTHub
 {
-    public class Sender
+    public class Receiver
     {
         public string id { get; set; }
         public string filePath { get; set; }
         public string filePattern { get; set; }
     }
 
-    public class Receiver
+    public class Sender
     {
         public string id { get; set; }
         public string connectionString { get; set; }
@@ -25,8 +25,9 @@ namespace FileToAzureIoTHub
 
     public class Settings
     {
-        public IList<Sender> sender { get; set; }
         public IList<Receiver> receiver { get; set; }
+        public IList<Sender> sender { get; set; }
+
     }
 
     public class Watcher : BackgroundService
@@ -58,6 +59,9 @@ namespace FileToAzureIoTHub
             {
                 jsonString = File.ReadAllText(fileName);
                 settings = JsonSerializer.Deserialize<Settings>(jsonString);
+                _logger.LogInformation("{time} FileToAzureIoTHub Configuration Settings Initialized.", DateTimeOffset.Now);
+                _logger.LogInformation("{time} {config}", DateTimeOffset.Now, JsonSerializer.Serialize<Settings>(settings));
+
             }
             else
                 throw new System.IO.IOException("Configuration File does not exist.");
@@ -65,25 +69,24 @@ namespace FileToAzureIoTHub
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            using FileSystemWatcher oewatcher = new FileSystemWatcher(),
+                                    sswatcher = new FileSystemWatcher();
 
-            using (FileSystemWatcher watcher = new FileSystemWatcher())
+            oewatcher.Path = Path.GetFullPath(settings.receiver[0].filePath);
+            oewatcher.Filter = settings.receiver[0].filePattern;
+            oewatcher.Created += OnCreated_OstfoldEnergi;
+            oewatcher.EnableRaisingEvents = true;
+
+            _logger.LogInformation("{time} FileToAzureIoTHub service started.", DateTimeOffset.Now);
+
+            while (!stoppingToken.IsCancellationRequested)
             {
-                watcher.Path = Path.GetFullPath(settings.sender[0].filePath);
-                watcher.Filter = settings.sender[0].filePattern;
-                watcher.Created += OnCreated;
-                watcher.EnableRaisingEvents = true;
-
-                _logger.LogInformation("{time} FileToAzureIoTHub service started.", DateTimeOffset.Now);
-
-                while (!stoppingToken.IsCancellationRequested)
-                {
-                    await Task.Delay(1000, stoppingToken);
-                }
-                _logger.LogInformation("{time} FileToAzureIoTHub service stopping.", DateTimeOffset.Now);
+                await Task.Delay(1000, stoppingToken);
             }
+            _logger.LogInformation("{time} FileToAzureIoTHub service stopping.", DateTimeOffset.Now);
         }
 
-        private static void OnCreated(object source, FileSystemEventArgs e)
+        private static void OnCreated_OstfoldEnergi(object source, FileSystemEventArgs e)
         {
             Thread.Sleep(3000);
             Senders.OstfoldEnergi data = new Senders.OstfoldEnergi(e.FullPath);
@@ -91,9 +94,3 @@ namespace FileToAzureIoTHub
     }
 
 }
-
-/*
-    Console.WriteLine("Press 'q' + 'Enter' to quit the application.");
-    while (Console.Read() != 'q') ;
-
-*/

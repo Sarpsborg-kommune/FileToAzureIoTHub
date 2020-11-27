@@ -34,7 +34,7 @@ The file format is:
 
 ```json
 {
-    "sender": [
+    "receiver": [
         {
             "id": "",
             "filePath": "",
@@ -45,7 +45,7 @@ The file format is:
         },
         ...
     ],
-    "receiver": [
+    "sender": [
         {
             "id": "",
             "connectionString": ""
@@ -58,8 +58,64 @@ The file format is:
 }
 ```
 
-Currently only two senders are implemented:<br/>
+Currently only two receivers are implemented:<br/>
 ostfoldeneergi, smartelektro<br/>
 
-Currently only one receiver is implemented:<br/>
+Currently only one sender is implemented:<br/>
 energymanager<br/>
+
+## Sender
+
+## Receiver
+
+### Ostfold Energi
+
+This json format does not adhere to standards. The format uses Norwegian special characters, and
+this should be avoided.
+The dataformat for the messages is:
+
+```json
+{
+    "måledata":[
+        {
+            "id": int,
+            "k-nummer": "<string>",
+            "dato": "<string>DD.MM.YYY",
+            "periode": "<string>HH:MM",
+            "forbruk": int,
+            "målerstand": int
+        },
+        ...
+    ]
+}
+```
+
+### EnergyManager
+
+EnergyManager must receive messages in the following json format.
+
+```json
+{
+    "<måler-id>": [
+        {"ts": <datetime>, "v": <double>},
+        { ... },
+        ...
+    ]
+    "<måler-id<": [
+        {"ts": <datetime>, "v": <double>},
+        { ... },
+        ...
+    ],
+    ...
+}
+```
+
+Multisensordata can also be formatted as:
+
+```json
+{
+    "<måler-id>": [
+        {"ts": <datetime>, "v": { "<key1>": <double>, "<key2>": <double>, ...}}
+    ]
+}
+```

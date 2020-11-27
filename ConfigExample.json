@@ -1,5 +1,5 @@
 {
-    "Sender": [
+    "receiver": [
         {
             "id": "ostfoldenergi",
             "filePath": "./testdata/oe/",
@@ -11,7 +11,7 @@
             "filePattern": "BY*.csv"
         }
     ],
-    "receiver": [
+    "sender": [
         {
             "id": "energymanager",
             "connectionString": "*Secret*"
