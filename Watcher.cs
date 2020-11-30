@@ -99,7 +99,7 @@ namespace FileToAzureIoTHub
                 Senders.Measurement s_item = new Senders.Measurement();
                 List<Senders.Measurement> s_item_list = new List<Senders.Measurement>();
 
-                s_item.ts = DateTime.Parse($"{item.dato} {item.periode}");
+                s_item.ts = DateTime.Parse($"{item.dato} {item.periode}").ToUniversalTime();
                 s_item.v = item.malerstand;
 
                 s_item_list.Add(s_item);
