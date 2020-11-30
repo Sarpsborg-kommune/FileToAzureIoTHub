@@ -6,7 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 
 
-namespace FileToAzureIoTHub.Senders
+namespace FileToAzureIoTHub.Receivers
 {
     public class Maledata
     {
@@ -17,11 +17,11 @@ namespace FileToAzureIoTHub.Senders
         public string periode { get; set; }
         public int forbruk { get; set; }
 
-        [JsonPropertyName("målerstad")]
+        [JsonPropertyName("målerstand")]
         public int malerstand { get; set; }
     }
 
-    public class SenderData
+    public class ReceiverData
     {
         [JsonPropertyName("måledata")]
         public IList<Maledata> maledata { get; set; }
@@ -29,7 +29,7 @@ namespace FileToAzureIoTHub.Senders
 
     public class OstfoldEnergi
     {
-        SenderData data;
+        public ReceiverData data { get; }
         string jsonString;
 
         public OstfoldEnergi(string fileName)
@@ -37,7 +37,7 @@ namespace FileToAzureIoTHub.Senders
             if (File.Exists(fileName))
             {
                 jsonString = File.ReadAllText(fileName, Encoding.Latin1);
-                data = JsonSerializer.Deserialize<SenderData>(jsonString);
+                data = JsonSerializer.Deserialize<ReceiverData>(jsonString);
                 //Console.WriteLine(JsonSerializer.Serialize(data));
             }
             else

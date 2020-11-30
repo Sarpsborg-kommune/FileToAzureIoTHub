@@ -88,8 +88,24 @@ namespace FileToAzureIoTHub
 
         private static void OnCreated_OstfoldEnergi(object source, FileSystemEventArgs e)
         {
-            Thread.Sleep(3000);
-            Senders.OstfoldEnergi data = new Senders.OstfoldEnergi(e.FullPath);
+            Thread.Sleep(3000);         // Wait to be sure the file is closed.
+            Receivers.OstfoldEnergi r_data = new Receivers.OstfoldEnergi(e.FullPath);
+            Senders.EnergyManager s_data = new Senders.EnergyManager();
+            s_data.data = new Dictionary<string, List<Senders.Measurement>>();
+
+            foreach (Receivers.Maledata item in r_data.data.maledata)
+            {
+
+                Senders.Measurement s_item = new Senders.Measurement();
+                List<Senders.Measurement> s_item_list = new List<Senders.Measurement>();
+
+                s_item.ts = DateTime.Parse($"{item.dato} {item.periode}");
+                s_item.v = item.malerstand;
+
+                s_item_list.Add(s_item);
+                s_data.data.Add(item.id.ToString(), s_item_list);
+            }
+            Console.WriteLine(s_data.toJson());
         }
     }
 
