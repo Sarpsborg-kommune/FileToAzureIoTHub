@@ -100,7 +100,7 @@ EnergyManager must receive messages in the following json format.
         {"ts": <datetime>, "v": <double>},
         { ... },
         ...
-    ]
+    ],
     "<måler-id<": [
         {"ts": <datetime>, "v": <double>},
         { ... },
@@ -135,3 +135,5 @@ The Ident String has the following format:
 ID example: `BY3570_310_001_OE001`
 
 MEASUREMENTTYPE examples: `Heat_energy_Y`, `kwh_T`
+
+The Code uses the CsvHelper library: https://joshclose.github.io/CsvHelper/.

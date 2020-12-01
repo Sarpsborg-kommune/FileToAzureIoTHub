@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="csvhelper" Version="17.0.0" />
+    <PackageReference Include="microsoft.azure.devices.client" Version="1.33.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
   </ItemGroup>
 </Project>

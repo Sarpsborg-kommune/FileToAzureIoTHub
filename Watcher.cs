@@ -1,12 +1,14 @@
 using System;
 using System.IO;
+using System.Text;
+using System.Linq;
 using System.Text.Json;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Devices.Client;
 
 namespace FileToAzureIoTHub
 {
@@ -65,6 +67,8 @@ namespace FileToAzureIoTHub
             }
             else
                 throw new System.IO.IOException("Configuration File does not exist.");
+
+            Program.connectionString = settings.sender[0].connectionString;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -76,6 +80,11 @@ namespace FileToAzureIoTHub
             oewatcher.Filter = settings.receiver[0].filePattern;
             oewatcher.Created += OnCreated_OstfoldEnergi;
             oewatcher.EnableRaisingEvents = true;
+
+            sswatcher.Path = Path.GetFullPath(settings.receiver[1].filePath);
+            sswatcher.Filter = settings.receiver[1].filePattern;
+            sswatcher.Created += OnCreated_SmartElektro;
+            sswatcher.EnableRaisingEvents = true;
 
             _logger.LogInformation("{time} FileToAzureIoTHub service started.", DateTimeOffset.Now);
 
@@ -105,8 +114,54 @@ namespace FileToAzureIoTHub
                 s_item_list.Add(s_item);
                 s_data.data.Add(item.id.ToString(), s_item_list);
             }
-            Console.WriteLine(s_data.toJson());
+            SendDataToIotHub(s_data.toJson());
         }
+
+        private static void OnCreated_SmartElektro(object source, FileSystemEventArgs e)
+        {
+            Thread.Sleep(3000);     // Wait to be sure the file is closed.
+            Receivers.SmartElektro r_data = new Receivers.SmartElektro(e.FullPath);
+            Senders.EnergyManager s_data = new Senders.EnergyManager();
+            s_data.data = new Dictionary<string, List<Senders.Measurement>>();
+
+
+            foreach (Receivers.SeData item in r_data.sedata)
+            {
+                Senders.Measurement s_item = new Senders.Measurement();
+                List<Senders.Measurement> s_item_list = new List<Senders.Measurement>();
+                s_item.ts = item.Timestamp;
+                s_item.v = item.Value;
+
+                if (s_data.data.ContainsKey(item.Id))
+                {
+                    s_data.data[item.Id].Add(s_item);
+                }
+                else
+                {
+                    s_item_list.Add(s_item);
+                    s_data.data.Add(item.Id, s_item_list);
+                }
+            }
+            SendDataToIotHub(s_data.toJson());
+        }
+
+        private static async void SendDataToIotHub(string jsonData)
+        {
+            DeviceClient iotClient;
+
+            try
+            {
+                iotClient = DeviceClient.CreateFromConnectionString(Program.connectionString);
+                var message = new Message(Encoding.ASCII.GetBytes(jsonData));
+                await iotClient.SendEventAsync(message);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 
 }
