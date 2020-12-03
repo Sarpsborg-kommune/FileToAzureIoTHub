@@ -17,7 +17,7 @@ Git must be installed to download the needed files.
 Clone the repository: `git clone ...`<br/>
 `cd FileToAzureIoTHub`<br/>
 
-**Linux Specific**
+**Linux Specific**<br/>
 Build the project: `dotnet build --configuration Release --runtime linux-x64`<br/>
 Copy binary files to /opt/FileToAzureIoTHub:<br/>
 `cp -R ./bin/Release/net5.0/linux-x64 /opt/FileToAzureIoTHub`<br/>

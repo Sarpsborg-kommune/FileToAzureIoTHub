@@ -81,9 +81,11 @@ namespace FileToAzureIoTHub
 
             oewatcher.Path = Path.GetFullPath(settings.receiver[0].filePath);
             oewatcher.Filter = settings.receiver[0].filePattern;
+            oewatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
             oewatcher.Created += OnCreated_OstfoldEnergi;
             oewatcher.EnableRaisingEvents = true;
 
+            sswatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
             sswatcher.Path = Path.GetFullPath(settings.receiver[1].filePath);
             sswatcher.Filter = settings.receiver[1].filePattern;
             sswatcher.Created += OnCreated_SmartElektro;
