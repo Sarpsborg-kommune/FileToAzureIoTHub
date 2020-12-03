@@ -8,7 +8,7 @@ file is created.
 ## Prerequisites
 
 .NET 5 SDK and PowerShell 7 must be installed on the server. To Install .Net and Powershell on Linux or Windows, please follow Microsofts instructions (google it). You can use the latest
-versions.
+versions. For Ubuntu: `# sudo apt get dotnet-sdk-5.0`
 
 Git must be installed to download the needed files.
 

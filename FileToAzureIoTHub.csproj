@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <OutputType>Exe</OutputType>
     <UserSecretsId>dotnet-FileToAzureIoTHub-4d6c4355-8cb7-46c2-a144-35b3cd41432c</UserSecretsId>
   </PropertyGroup>
 
