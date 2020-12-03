@@ -16,8 +16,21 @@ Git must be installed to download the needed files.
 
 Clone the repository: `git clone ...`<br/>
 `cd FileToAzureIoTHub`<br/>
-Build the project: `dotnet build --configuration Release`<br/>
-As administrator/root: `pwsh ./Install.ps1`
+
+**Linux Specific**
+Build the project: `dotnet build --configuration Release --runtime linux-x64`<br/>
+Copy binary files to /opt/FileToAzureIoTHub:<br/>
+`cp -R ./bin/Release/net5.0/linux-x64 /opt/FileToAzureIoTHub`<br/>
+Copy FileToAzureIoTHub.service to /etc/systemd/system/:<br/>
+`sudo cp FileToAzureIoTHub.service /etc/systemd/system`<br/>
+Copy the configuration file to /etc and edit it:<br\>
+`sudo cp ConfigExample.json /etc/FileToAzureIoTHub.json`<br\>
+Enable and start the servie<br\>
+`sudo systemctl enable FileToAzureIoTHub` <br\>
+`sudo systemctl start FileToAzureIoTHub`<br\>
+Check if everything is running:<br\>
+`sudo systemctl statue FileToAzureIoTHub`<br\>
+`sudo journalctl -r -u FileToAzureIoTHub`<br\>
 
 ## Configuration File
 
