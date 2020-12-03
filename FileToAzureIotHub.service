@@ -1,0 +1,9 @@
+[Unit]
+Description=FileToAzureIoTHub
+
+[Service]
+Type=notify
+ExecStart=/opt/FileToAzureIoTHub/FileToAzureIoTHub
+
+[Install]
+WantedBy=multi-user.target

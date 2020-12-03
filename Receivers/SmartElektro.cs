@@ -28,13 +28,6 @@ namespace FileToAzureIoTHub.Receivers
             {
                 string[] item = line.Split(',');
 
-
-                /* item[1] = Regex.Replace(item[1], "Cluster1.", String.Empty);
-                item[1] = Regex.Replace(item[1], "_\\w$", String.Empty);
-                Match m = Regex.Match(item[1], @"(.+)_(\p{L}+)", RegexOptions.RightToLeft);
-                record.Type = m.Groups[2].Value.ToLower();
-                record.Id = m.Groups[1].Value;
-                */
                 string matchString1 = "_Total_Active_Energy_Import_T";
                 string matchString2 = "Cluster1.";
                 if (item[1].Contains(matchString1))
