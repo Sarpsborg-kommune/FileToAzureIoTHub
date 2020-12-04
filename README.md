@@ -29,8 +29,13 @@ Enable and start the servie<br/>
 `sudo systemctl enable FileToAzureIoTHub` <br/>
 `sudo systemctl start FileToAzureIoTHub`<br/>
 Check if everything is running:<br/>
-`sudo systemctl statue FileToAzureIoTHub`<br/>
+`sudo systemctl status FileToAzureIoTHub`<br/>
 `sudo journalctl -r -u FileToAzureIoTHub`<br/>
+Check inotify max_user_watches, this value must be in the region 65536:<br/>
+`vim /etc/sysctl.conf.d/20-inotify.conf`<br/>
+`fs.inotify.max_user_watches=65536`<br/>
+`# echo /proc/sys/fs/inotify/max_user_watches` to check<br/>
+Boot, or `echo 65536 | sudo tee /proc/sys/fs/inotify/max_user_watches`<br/>
 
 ## Configuration File
 
