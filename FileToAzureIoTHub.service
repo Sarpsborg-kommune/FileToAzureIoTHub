@@ -3,6 +3,8 @@ Description=FileToAzureIoTHub
 
 [Service]
 Type=notify
+Restart=on-failure
+RestartSec=10
 ExecStart=/opt/FileToAzureIoTHub/FileToAzureIoTHub
 
 [Install]

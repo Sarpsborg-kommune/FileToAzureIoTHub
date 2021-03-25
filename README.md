@@ -20,7 +20,7 @@ Clone the repository: `git clone ...`<br/>
 **Linux Specific**<br/>
 Build the project: `dotnet build --configuration Release --runtime linux-x64`<br/>
 Copy binary files to /opt/FileToAzureIoTHub:<br/>
-`cp -R ./bin/Release/net5.0/linux-x64 /opt/FileToAzureIoTHub`<br/>
+`cp -R ./bin/Release/net5.0/linux-x64/* /opt/FileToAzureIoTHub`<br/>
 Copy FileToAzureIoTHub.service to /etc/systemd/system/:<br/>
 `sudo cp FileToAzureIoTHub.service /etc/systemd/system`<br/>
 Copy the configuration file to /etc and edit it:<br/>
