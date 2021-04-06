@@ -65,7 +65,7 @@ namespace FileToAzureIoTHub
             {
                 jsonString = File.ReadAllText(fileName);
                 settings = JsonSerializer.Deserialize<Settings>(jsonString);
-                _logger.LogInformation("{time} FileToAzureIoTHub Version 1.1");
+                _logger.LogInformation("{time} FileToAzureIoTHub Version 1.1", DateTimeOffset.Now);
                 _logger.LogInformation("{time} FileToAzureIoTHub Configuration Settings Initialized.", DateTimeOffset.Now);
                 _logger.LogInformation("{time} {config}", DateTimeOffset.Now, JsonSerializer.Serialize<Settings>(settings));
             }
