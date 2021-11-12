@@ -124,16 +124,18 @@ namespace FileToAzureIoTHub
 
                         foreach (Receivers.Maledata item in r_data.data.maledata)
                         {
+                            if (item.malerstand > 0)
+                            {
+                                Senders.Measurement s_item = new Senders.Measurement();
+                                List<Senders.Measurement> s_item_list = new List<Senders.Measurement>();
 
-                            Senders.Measurement s_item = new Senders.Measurement();
-                            List<Senders.Measurement> s_item_list = new List<Senders.Measurement>();
+                                s_item.ts = DateTime.Parse($"{item.dato} {item.periode}").ToUniversalTime();
+                                s_item.v = item.malerstand;
 
-                            s_item.ts = DateTime.Parse($"{item.dato} {item.periode}").ToUniversalTime();
-                            s_item.v = item.malerstand;
-
-                            s_item_list.Add(s_item);
-                            s_data.data.Add(item.id.ToString(), s_item_list);
-                            dataids += $"[{item.id.ToString()}] ";
+                                s_item_list.Add(s_item);
+                                s_data.data.Add(item.id.ToString(), s_item_list);
+                                dataids += $"[{item.id.ToString()}] ";
+                            }
                         }
                         _logger.LogInformation($"Received ID(s): {dataids}");
                         SendDataToIotHub(s_data.toJson());
